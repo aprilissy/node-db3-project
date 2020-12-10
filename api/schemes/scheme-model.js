@@ -11,8 +11,6 @@ const db = require('../../data/db-config');
  }
 
  function find() {
-   console.log('here');
-   
    return db('schemes')
  }
 
@@ -64,9 +62,25 @@ function add(scheme) {
     .then(ids => ({ id: ids[0], ...scheme }));
 }
 
- function update(changes, id) {
-
+ function update(changes, id) { 
+  return db('schemes')
+    .where({ id })
+    .update(changes)
+    .then(() => {
+      return findById(id)
+    })
  }
- function remove(id) {
 
+ async function remove(id) {
+  const rmObj = await findById(id)
+  const rm = db('schemes').where({ id }).del().then(() => {
+    return findById(id)
+  })
+  if (!rm) {
+    return null
+  } else {
+    return rmObj
+  }
  }
+
+ //🐰 windows key + .

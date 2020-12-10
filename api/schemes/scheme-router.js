@@ -7,7 +7,6 @@ const router = express.Router();
 router.get('/', (req, res) => {
   Schemes.find()
     .then(schemes => {
-      console.log('res',res.data)
       res.json(schemes);
     })
     .catch(err => {
